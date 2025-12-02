@@ -13,4 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get("/status", fn () => response()->json(["status" => "API is running"]));
+Route::get('/', fn() => response()->json([
+    "status" => "API is running",
+    "version" => "v1",
+    "service" => "realtime-orders-api"
+]));

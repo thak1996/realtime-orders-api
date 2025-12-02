@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException as ValidateException;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -17,16 +17,17 @@ class AuthController extends Controller
             'device_name' => 'required|string',
         ]);
 
-        $user = User::where('email', $request->input('email'))->first();
+        $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->input('password'), $user->password)) {
-            throw ValidateException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['As credenciais fornecidas estão incorretas.'],
             ]);
         }
 
-        return [
-            'access_token' => $user->createToken($request->input('device_name'))->plainTextToken,
-        ];
+        return response()->json([
+            'access_token' => $user->createToken($request->device_name)->plainTextToken,
+            'user' => $user,
+        ], 200);
     }
 }

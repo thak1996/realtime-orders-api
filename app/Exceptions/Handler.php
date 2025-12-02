@@ -28,15 +28,4 @@ class Handler extends ExceptionHandler
             //
         });
     }
-
-    public function render($request, Throwable $e): Response
-    {
-        if ($request->is('api/*')) {
-            return $this->prepareJsonResponse($request, $e);
-        }
-        if ($request->wantsJson()) {
-            return $this->prepareJsonResponse($request, $e);
-        }
-        return parent::render($request, $e);
-    }
 }
