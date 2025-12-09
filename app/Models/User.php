@@ -7,17 +7,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema(
- * schema="User",
- * required={"id", "name", "email", "created_at"},
- * @OA\Property(property="id", type="integer", readOnly="true", example="1"),
- * @OA\Property(property="name", type="string", example="João Silva"),
- * @OA\Property(property="email", type="string", format="email", example="joao@exemplo.com"),
- * @OA\Property(property="email_verified_at", type="string", format="date-time", nullable="true"),
- * @OA\Property(property="created_at", type="string", format="date-time", readOnly="true"),
- * @OA\Property(property="updated_at", type="string", format="date-time", readOnly="true"),
+ *     schema="User",
+ *     type="object",
+ *     title="User",
+ *     description="Modelo de Usuário",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="name", type="string", example="João Silva"),
+ *     @OA\Property(property="email", type="string", format="email", example="joao@example.com"),
+ *     @OA\Property(property="email_verified_at", type="string", format="date-time", nullable=true),
+ *     @OA\Property(property="created_at", type="string", format="date-time"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time")
  * )
  */
 
@@ -34,6 +37,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
     ];
 
     /**
@@ -53,6 +57,15 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
     ];
+
+    public function customer()
+    {
+        return $this->hasOne(Customer::class);
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }
