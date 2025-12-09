@@ -25,4 +25,4 @@ Route::middleware(['auth:sanctum'],)->group(function () {
 
 Route::get("/status", fn() => response()->json(["status" => "API is running"]));
 
-Route::get('my-event', fn() => event(new MyEvent("Hello World")));
+Route::get('/my-event', fn() => event(new MyEvent("Hello World")));
