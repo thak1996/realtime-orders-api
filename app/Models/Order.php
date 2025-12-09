@@ -27,36 +27,18 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'customer_id',
-        'store_id',
-        'total_price',
-        'status',
-    ];
-
-    protected $casts = [
-        'total_price' => 'float',
-    ];
-
-    const STATUS_PENDING = 'pending';
-    const STATUS_PROCESSING = 'processing';
-    const STATUS_COMPLETED = 'completed';
-    const STATUS_CANCELLED = 'cancelled';
+    public function store(): BelongsTo
+    {
+        return $this->belongsTo(Store::class);
+    }
 
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
     }
 
-    public function store(): BelongsTo
-    {
-        return $this->belongsTo(Store::class);
-    }
-
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'order_product')
-            ->withPivot('quantity', 'price')
-            ->withTimestamps();
+        return $this->belongsToMany(Product::class, 'order_product')->withPivot('quantity', 'subtotal');
     }
 }
