@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Events\MyEvent;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +24,5 @@ Route::middleware(['auth:sanctum'],)->group(function () {
 });
 
 Route::get("/status", fn() => response()->json(["status" => "API is running"]));
+
+Route::get('my-event', fn() => event(new MyEvent("Hello World")));
