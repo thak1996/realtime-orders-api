@@ -12,18 +12,21 @@
     },
     "servers": [
         {
-            "url": "http://localhost",
+            "url": "http://localhost:8080",
             "description": "Servidor Principal da API"
+        },
+        {
+            "url": "http://localhost:8080"
         }
     ],
     "paths": {
-        "/login": {
+        "/api/login": {
             "post": {
                 "tags": [
                     "Autenticação"
                 ],
                 "summary": "Autentica um usuário e retorna um token de acesso.",
-                "description": "Usa e-mail, senha e nome do dispositivo para autenticar o usuário e gerar um token Sanactum.",
+                "description": "Usa e-mail, senha e nome do dispositivo para autenticar o usuário e gerar um token Sanctum.",
                 "operationId": "login",
                 "requestBody": {
                     "required": true,
@@ -34,16 +37,16 @@
                                     "email": {
                                         "type": "string",
                                         "format": "email",
-                                        "example": "usuario@exemplo.com"
+                                        "example": "test@example.com"
                                     },
                                     "password": {
                                         "type": "string",
                                         "format": "password",
-                                        "example": "senha123"
+                                        "example": "password"
                                     },
                                     "device_name": {
                                         "type": "string",
-                                        "example": "Meu Telefone Android"
+                                        "example": "Swagger UI"
                                     }
                                 },
                                 "type": "object"
@@ -63,7 +66,35 @@
                                             "example": "1|xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
                                         },
                                         "user": {
-                                            "$ref": "#/components/schemas/User"
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "João Silva"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "format": "email",
+                                                    "example": "usuario@exemplo.com"
+                                                },
+                                                "email_verified_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "nullable": true
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -72,9 +103,119 @@
                         }
                     },
                     "422": {
-                        "description": "Credenciais Inválidas ou Erro de Validação"
+                        "description": "Credenciais Inválidas ou Erro de Validação",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "As credenciais fornecidas estão incorretas."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Autenticação"
+                ],
+                "summary": "Desconecta o usuário",
+                "description": "Remove o token de acesso atual e desconecta o usuário",
+                "operationId": "logout",
+                "responses": {
+                    "200": {
+                        "description": "Desconexão bem-sucedida",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Logged out successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/user": {
+            "get": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Obtém informações do usuário autenticado",
+                "description": "Retorna os dados do usuário atualmente autenticado",
+                "operationId": "getUser",
+                "responses": {
+                    "200": {
+                        "description": "Usuário obtido com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "João Silva"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email",
+                                            "example": "usuario@exemplo.com"
+                                        },
+                                        "email_verified_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "nullable": true
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         }
     },
@@ -126,6 +267,10 @@
         {
             "name": "Autenticação",
             "description": "Autenticação"
+        },
+        {
+            "name": "Usuário",
+            "description": "Usuário"
         }
     ]
 }

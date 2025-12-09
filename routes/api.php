@@ -15,7 +15,12 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', fn(Request $request) => $request->user());
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::get("/logout", [AuthController::class, "logout"])->middleware("auth:sanctum");
+Route::get("/user", [AuthController::class, "user"])->middleware("auth:sanctum");
+
+
 Route::get("/status", fn() => response()->json(["status" => "API is running"]));
 
-Route::post('/login', [AuthController::class, 'login']);
+
