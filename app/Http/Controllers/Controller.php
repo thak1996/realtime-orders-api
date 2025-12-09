@@ -22,6 +22,14 @@ use Illuminate\Routing\Controller as BaseController;
  * url=L5_SWAGGER_CONST_HOST,
  * description="Servidor Principal da API"
  * )
+ * 
+ * @OA\SecurityScheme(
+ *     securityScheme="sanctum",
+ *     type="http",
+ *     scheme="bearer",
+ *     bearerFormat="JWT",
+ *     description="Insira o token de acesso obtido no endpoint /api/login"
+ * )
  **/
 
 class Controller extends BaseController

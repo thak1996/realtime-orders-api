@@ -261,6 +261,14 @@
                 },
                 "type": "object"
             }
+        },
+        "securitySchemes": {
+            "sanctum": {
+                "type": "http",
+                "description": "Insira o token de acesso obtido no endpoint /api/login",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
         }
     },
     "tags": [

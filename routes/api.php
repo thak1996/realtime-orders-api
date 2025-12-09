@@ -17,10 +17,9 @@ use App\Http\Controllers\AuthController;
 
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::get("/logout", [AuthController::class, "logout"])->middleware("auth:sanctum");
-Route::get("/user", [AuthController::class, "user"])->middleware("auth:sanctum");
-
+Route::middleware(['auth:sanctum'],)->group(function () {
+    Route::post("/logout", [AuthController::class, "logout"]);
+    Route::get("/user", [AuthController::class, "user"]);
+});
 
 Route::get("/status", fn() => response()->json(["status" => "API is running"]));
-
-
