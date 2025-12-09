@@ -68,7 +68,6 @@ class AuthController extends Controller
 
         return response()->json([
             'access_token' => $user->createToken($request->device_name)->plainTextToken,
-            'user' => $user,
         ], 200);
     }
 
