@@ -59,16 +59,28 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Summary of role
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function role()
     {
         return $this->belongsTo(Role::class);
     }
 
+    /**
+     * Summary of customer
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function customer()
     {
         return $this->hasOne(Customer::class);
     }
 
+    /**
+     * Summary of store
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function store()
     {
         return $this->hasOne(Store::class);

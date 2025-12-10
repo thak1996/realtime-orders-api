@@ -27,16 +27,28 @@ class Order extends Model
 {
     use HasFactory;
 
+    /**
+     * Summary of store
+     * @return BelongsTo
+     */
     public function store(): BelongsTo
     {
         return $this->belongsTo(Store::class);
     }
 
+    /**
+     * Summary of customer
+     * @return BelongsTo
+     */
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
     }
 
+    /**
+     * Summary of products
+     * @return BelongsToMany
+     */
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'order_product')->withPivot('quantity', 'subtotal');

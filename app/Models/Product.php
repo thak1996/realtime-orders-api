@@ -28,22 +28,38 @@ class Product extends Model
 {
     use HasFactory;
 
+    /**
+     * Summary of fillable
+     * @var array
+     */
     protected $fillable = [
         'name',
         'description',
         'price',
     ];
 
+    /**
+     * Summary of casts
+     * @var array
+     */
     protected $casts = [
         'price' => 'float',
         'stock_quantity' => 'integer',
     ];
 
+    /**
+     * Summary of store
+     * @return BelongsTo
+     */
     public function store(): BelongsTo
     {
         return $this->belongsTo(Store::class);
     }
 
+    /**
+     * Summary of orders
+     * @return BelongsToMany
+     */
     public function orders(): BelongsToMany
     {
         return $this->belongsToMany(Order::class, 'order_product')

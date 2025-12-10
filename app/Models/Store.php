@@ -33,11 +33,19 @@ class Store extends Model
         'address',
     ];
 
+    /**
+     * Summary of products
+     * @return HasMany
+     */
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
     }
 
+    /**
+     * Summary of orders
+     * @return HasMany
+     */
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);

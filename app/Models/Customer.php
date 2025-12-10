@@ -24,6 +24,10 @@ class Customer extends Model
 {
     use HasFactory;
 
+    /**
+     * Summary of orders
+     * @return HasMany
+     */
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
