@@ -130,12 +130,16 @@ class OrderController extends Controller
      *         description="Pedido não encontrado"
      *     ),
      *     @OA\Response(
+     *         response=403,
+     *         description="Pedido não pertence à loja autenticada"
+     *    ),
+     *     @OA\Response(
      *         response=401,
      *         description="Não autenticado"
      *     )
      * )
      */
-    public function show(string $id)
+    public function show(Request $request, string $id)
     {
         $order = Order::with('products')->find($id);
 
@@ -143,6 +147,14 @@ class OrderController extends Controller
             return response()->json([
                 'message' => 'Pedido não encontrado',
             ], 404);
+        }
+
+        $store = $request->user()->store;
+
+        if (!$store || $order->store_id !== $store->id) {
+            return response()->json([
+                'message' => 'Pedido não pertence à loja autenticada',
+            ], 403);
         }
 
         return new OrderResource($order);

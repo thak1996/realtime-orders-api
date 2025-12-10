@@ -286,10 +286,6 @@
                                             "format": "float",
                                             "example": 299.97
                                         },
-                                        "status": {
-                                            "type": "string",
-                                            "example": "pending"
-                                        },
                                         "created_at": {
                                             "type": "string",
                                             "format": "date-time"
@@ -377,36 +373,6 @@
                                             "format": "float",
                                             "example": 299.97
                                         },
-                                        "products": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "integer",
-                                                        "example": 1
-                                                    },
-                                                    "name": {
-                                                        "type": "string",
-                                                        "example": "Produto A"
-                                                    },
-                                                    "price": {
-                                                        "type": "number",
-                                                        "format": "float",
-                                                        "example": 99.99
-                                                    },
-                                                    "quantity": {
-                                                        "type": "integer",
-                                                        "example": 2
-                                                    },
-                                                    "subtotal": {
-                                                        "type": "number",
-                                                        "format": "float",
-                                                        "example": 199.98
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
-                                        },
                                         "created_at": {
                                             "type": "string",
                                             "format": "date-time"
@@ -423,6 +389,9 @@
                     },
                     "404": {
                         "description": "Pedido não encontrado"
+                    },
+                    "403": {
+                        "description": "Pedido não pertence à loja autenticada"
                     },
                     "401": {
                         "description": "Não autenticado"
