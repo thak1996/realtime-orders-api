@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -41,7 +42,6 @@ class OrderController extends Controller
      *             @OA\Property(property="customer_id", type="integer", example=1),
      *             @OA\Property(property="store_id", type="integer", example=1),
      *             @OA\Property(property="total_price", type="number", format="float", example=299.97),
-     *             @OA\Property(property="status", type="string", example="pending"),
      *             @OA\Property(property="created_at", type="string", format="date-time"),
      *             @OA\Property(property="updated_at", type="string", format="date-time")
      *         )
@@ -95,14 +95,56 @@ class OrderController extends Controller
             )
         );
 
-        return $order;
+        return new OrderResource($order->load('products'));
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/orders/{id}",
+     *     operationId="showOrder",
+     *     tags={"Pedidos"},
+     *     summary="Obtém um pedido específico",
+     *     description="Retorna os detalhes de um pedido com todos os seus produtos",
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID do pedido",
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Pedido encontrado",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer", example=1),
+     *             @OA\Property(property="customer_id", type="integer", example=1),
+     *             @OA\Property(property="store_id", type="integer", example=1),
+     *             @OA\Property(property="total_price", type="number", format="float", example=299.97),
+     *             @OA\Property(property="created_at", type="string", format="date-time"),
+     *             @OA\Property(property="updated_at", type="string", format="date-time")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Pedido não encontrado"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Não autenticado"
+     *     )
+     * )
      */
     public function show(string $id)
     {
-        //
+        $order = Order::with('products')->find($id);
+
+        if (!$order) {
+            return response()->json([
+                'message' => 'Pedido não encontrado',
+            ], 404);
+        }
+
+        return new OrderResource($order);
     }
 }

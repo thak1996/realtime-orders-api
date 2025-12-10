@@ -24,6 +24,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get("/user", [AuthController::class, "user"]);
 
     Route::post("/orders", [OrderController::class, "store"])->middleware('role:customer');
+    Route::get("/orders/{id}", [OrderController::class, "show"])->middleware('role:store');
 });
 
 Route::get("/status", fn() => response()->json(["status" => "API is running"]));

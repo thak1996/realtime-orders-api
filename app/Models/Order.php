@@ -27,6 +27,12 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        "store_id",
+        "total_price",
+    ];
+
+
     /**
      * Summary of store
      * @return BelongsTo
@@ -51,6 +57,6 @@ class Order extends Model
      */
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'order_product')->withPivot('quantity', 'subtotal');
+        return $this->belongsToMany(Product::class, 'order_product')->withPivot('quantity', 'price');
     }
 }
